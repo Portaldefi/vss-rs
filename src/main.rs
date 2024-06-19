@@ -126,7 +126,6 @@ async fn main() -> anyhow::Result<()> {
         .fallback(fallback)
         .layer(
             CorsLayer::new()
-                .allow_origin(AllowOrigin::predicate(cors_function))
                 .allow_headers([http::header::CONTENT_TYPE, http::header::AUTHORIZATION])
                 .allow_methods([
                     Method::GET,
