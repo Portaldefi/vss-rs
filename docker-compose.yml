@@ -1,0 +1,42 @@
+version: "3.7"
+
+services:
+  vss:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+    links:
+      - postgres
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    restart: on-failure
+    stop_signal: SIGINT
+    networks:
+      - postgres
+    environment:
+      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+      DATABASE_URL: postgres://postgres:docker@postgres/vss
+      SELF_HOST: "true"
+
+  postgres:
+    image: postgres:alpine
+    restart: on-failure
+    stop_signal: SIGINT
+    networks:
+      - postgres
+    environment:
+      POSTGRES_DB: vss
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
+
+networks:
+  postgres:
