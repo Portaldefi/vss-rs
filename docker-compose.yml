@@ -1,6 +1,18 @@
 version: "3.7"
 
 services:
+  caddy:
+    image: caddy:2.8.4-alpine
+    restart: unless-stopped
+    command: caddy reverse-proxy --from https://$DOMAIN:443 --to http://vss:8080
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - caddy:/data
+    depends_on:
+      - vss
+
   vss:
     build:
       context: .
