@@ -31,11 +31,14 @@ services:
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
       DATABASE_URL: postgres://postgres:docker@postgres/vss
       SELF_HOST: "true"
+      RUST_LOG: "info"
 
   postgres:
     image: postgres:alpine
     restart: on-failure
     stop_signal: SIGINT
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_DB: vss
       POSTGRES_USER: postgres
