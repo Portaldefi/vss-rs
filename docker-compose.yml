@@ -27,8 +27,6 @@ services:
       - "8080"
     restart: on-failure
     stop_signal: SIGINT
-    networks:
-      - postgres
     environment:
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
       DATABASE_URL: postgres://postgres:docker@postgres/vss
@@ -38,8 +36,6 @@ services:
     image: postgres:alpine
     restart: on-failure
     stop_signal: SIGINT
-    networks:
-      - postgres
     environment:
       POSTGRES_DB: vss
       POSTGRES_USER: postgres
@@ -49,6 +45,4 @@ services:
 
 volumes:
   postgres-data:
-
-networks:
-  postgres:
+  caddy:
