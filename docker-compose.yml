@@ -13,6 +13,8 @@ services:
       - .Caddyfile:/etc/caddy/Caddyfile
     depends_on:
       - vss
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
   vss:
     build:
