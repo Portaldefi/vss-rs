@@ -14,11 +14,11 @@ To run the server, run `cargo run --release` in the root of the project.
 
 vss-rs is configured via environment variables, which may be set in an `.env` file in the working directory, or injected dynamically (command-line prefix, container orchestration, etc.) See `.env.sample`.
 
- - `DATABASE_URL`: a postgres connection string of the format `postgres://u:p@host[:port]/dbname`
- - `VSS_PORT`: (optional; default 8080) host port to bind
- - `AUTH_KEY`: (optional; default none) hex-encoded ES256K public key
- - `SELF_HOST`: (optional; default false)
- - `ADMIN_KEY`: (optional; default none) key to use as bearer token to trigger admin actions like migration
+- `DATABASE_URL`: a postgres connection string of the format `postgres://u:p@host[:port]/dbname`
+- `VSS_PORT`: (optional; default 8080) host port to bind
+- `AUTH_KEY`: (optional; default none) hex-encoded ES256K public key
+- `SELF_HOST`: (optional; default false)
+- `ADMIN_KEY`: (optional; default none) key to use as bearer token to trigger admin actions like migration
 
 ## Database
 
@@ -34,8 +34,13 @@ If you intend to host this in a public-facing way (_i.e._, not just on `localhos
 
 ## Authentication
 
-In production usage, the VSS clients (lightning wallets) should authenticate with a [JSON Web Token(JWT)](https://datatracker.ietf.org/doc/html/rfc7519) issued by an identity provider (not included in VSS-RS). 
+In production usage, the VSS clients (lightning wallets) should authenticate with a [JSON Web Token(JWT)](https://datatracker.ietf.org/doc/html/rfc7519) issued by an identity provider (not included in VSS-RS).
 
 ### Authentication Key
 
 The authentication key, set with `AUTH_KEY`, is a hex-encoded ECDSA _public_ key on the p256k1 curve and is used to validate the signature on a client-supplied JWT. The VSS client may have obtained the JWT from any issuing party as long as you set the appropriate public key here. The JWT should have set the `alg` parameter to `ES256K`. This is uncommon and should not be confused with `ES256`.
+
+### using the api
+
+- PUT: `putObjects`: array of objects with {`store_id`,`transaction_items`}. Each item is: {`key`:string,`value`:string,`version`:number}
+- POST: `getObject`: object with {`store_id`,`key`}
